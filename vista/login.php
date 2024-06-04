@@ -10,7 +10,8 @@
     <?php include 'header.php'; ?>
     <div class="container">
         <h1>Iniciar Sesión</h1>
-        <form action="procesar_login.php" method="post">
+        <form action="../controlador/controlador.php" method="post">
+        <input type="hidden" name="accion" value="login">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
             

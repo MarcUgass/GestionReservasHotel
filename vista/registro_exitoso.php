@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Registro Exitoso</h1>
         <p>¡Gracias por registrarte en el Hotel XYZ! Tu cuenta ha sido creada exitosamente.</p>
-        <a href="login.html">Iniciar Sesión</a>
+        <a href="login.php">Iniciar Sesión</a>
     </div>
     <?php include 'footer.php'; ?>
     <script>

@@ -11,6 +11,7 @@
     <div class="container">
         <h1>Registro de Usuarios</h1>
         <form action="../controlador/controlador.php" method="post">
+        <input type="hidden" name="accion" value="registro">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
             

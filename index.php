@@ -43,7 +43,6 @@
         </div>
     </div>
     <?php include 'vista/footer.php'; ?>
-    <!--
     <script>
         function cargarInformacionHotel() {
             fetch('obtener_informacion_hotel.php')
@@ -58,6 +57,5 @@
 
         document.addEventListener('DOMContentLoaded', cargarInformacionHotel);
     </script>
-    -->
 </body>
 </html>

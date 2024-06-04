@@ -11,7 +11,7 @@
     <div class="container">
         <h1>Inicio de Sesión Exitoso</h1>
         <p>Has iniciado sesión exitosamente en el Hotel XYZ.</p>
-        <a href="index.html">Ir a la Página Principal</a>
+        <a href="../index.php">Ir a la Página Principal</a>
     </div>
     <?php include 'footer.php'; ?>
     <script>
