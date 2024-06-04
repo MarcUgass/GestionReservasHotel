@@ -1,71 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Registration Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel XYZ - Página Inicial</title>
+    <link rel="stylesheet" href="vista/styles.css">
 </head>
 <body>
+    <!--?php include 'vista/header.php'; ?>-->
+    <header>
+    <h1>Hotel XYZ</h1>
+    <nav>
+        <ul>
+            <li><a href="index.php">Inicio</a></li>
+            <li><a href="vista/servicios.php">Servicios</a></li>
+            <li><a href="vista/habitaciones.php">Habitaciones</a></li>
+            <?php if (isset($_SESSION['usuario'])): ?>
+                <?php if ($_SESSION['rol'] == 'cliente'): ?>
+                    <li><a href="vista/reservas.php">Reservas</a></li>
+                    <li><a href="vista/reservas_usuario.php">Mis Reservas</a></li>
+                <?php elseif ($_SESSION['rol'] == 'recepcionista' || $_SESSION['rol'] == 'administrador'): ?>
+                    <li><a href="vista/reservas_admin.php">Gestión de Reservas</a></li>
+                    <li><a href="vista/reservas_usuario.php">Mis Reservas</a></li>
+                <?php endif; ?>
+                <li><a href="vista/logout.php">Cerrar Sesión</a></li>
+            <?php else: ?>
+                <li><a href="vista/registro.php">Registro</a></li>
+                <li><a href="vista/login.php">Iniciar Sesión</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
+    </header>
     <div class="container">
-        <div class="row col-md-6 col-md-offset-3">
-            <div class="panel panel-primary">
-                <div class="panel-heading text-center">
-                    <h1>Registration Form</h1>
-                </div>
-                <div class="panel-body">
-                    <form action="index.php" method="post">
-                        <div class="form-group">
-                            <label for="firstName">First Name</label>
-                            <input type="text" class="form-control" id="firstName" name="firstName" />
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name</label>
-                            <input type="text" class="form-control" id="lastName" name="lastName" />
-                        </div>
-                        <div class="form-group">
-                            <label for="gender">Gender</label>
-                            <div>
-                                <label for="male" class="radio-inline"><input type="radio" name="gender" value="m" id="male" />Male</label>
-                                <label for="female" class="radio-inline"><input type="radio" name="gender" value="f" id="female" />Female</label>
-                                <label for="others" class="radio-inline"><input type="radio" name="gender" value="o" id="others" />Others</label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" />
-                        </div>
-                        <div class="form-group">
-                            <label for="number">Phone Number</label>
-                            <input type="number" class="form-control" id="number" name="number" />
-                        </div>
-                        <input type="submit" class="btn btn-primary" />
-                    </form>
-                </div>
-            </div>
+        <h1>Bienvenido al Hotel XYZ</h1>
+        <p>Disfruta de una experiencia única en nuestro hotel con los mejores servicios y comodidades.</p>
+        <div class="info-hotel">
+            <h2>Información del Hotel</h2>
+            <p>Número total de habitaciones: <span id="total_habitaciones"></span></p>
+            <p>Número de habitaciones libres: <span id="habitaciones_libres"></span></p>
+            <p>Capacidad total del hotel: <span id="capacidad_total"></span></p>
+            <p>Número de huéspedes alojados: <span id="huespedes_alojados"></span></p>
         </div>
     </div>
-    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+    <?php include 'vista/footer.php'; ?>
+    <!--
+    <script>
+        function cargarInformacionHotel() {
+            fetch('obtener_informacion_hotel.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('total_habitaciones').innerText = data.total_habitaciones;
+                    document.getElementById('habitaciones_libres').innerText = data.habitaciones_libres;
+                    document.getElementById('capacidad_total').innerText = data.capacidad_total;
+                    document.getElementById('huespedes_alojados').innerText = data.huespedes_alojados;
+                });
+        }
 
-<?php
-    include 'modelos/funcionesdb.php';
-    include 'modelos/conectbd.php';
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $firstName = $_POST['firstName'];
-        $lastName = $_POST['lastName'];
-        $gender = $_POST['gender'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $number = $_POST['number'];
-
-        // Conectar a la base de datos
-        $connection = conectarBD();
-        
-        // Registrar los datos
-        registrar($connection, $firstName, $lastName, $gender, $email, $password, $number);
-    }
-  ?>
+        document.addEventListener('DOMContentLoaded', cargarInformacionHotel);
+    </script>
+    -->
 </body>
 </html>
