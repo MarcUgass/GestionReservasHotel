@@ -7,11 +7,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php 
+    // Si el usuario está logueado como cliente, mostrar la página de cliente
+    if (isset($_SESSION['rol']) && $_SESSION['rol'] == 'cliente') {
+        header("Location: ../index.php");
+    } else {
+    session_start();
+    include 'header.php'; 
+    ?>
     <div class="container">
         <h1>Iniciar Sesión</h1>
-        <form action="../controlador/controlador.php" method="post">
-        <input type="hidden" name="accion" value="login">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <input type="hidden" name="accion" value="login">
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
             
@@ -21,20 +28,17 @@
             <button type="submit">Iniciar Sesión</button>
         </form>
     </div>
-    <?php include 'footer.php'; ?>
-    <script>
-        function cargarInformacionHotel() {
-            fetch('obtener_informacion_hotel.php')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('total_habitaciones').innerText = data.total_habitaciones;
-                    document.getElementById('habitaciones_libres').innerText = data.habitaciones_libres;
-                    document.getElementById('capacidad_total').innerText = data.capacidad_total;
-                    document.getElementById('huespedes_alojados').innerText = data.huespedes_alojados;
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', cargarInformacionHotel);
-    </script>
+    <?php 
+    }
+    include 'footer.php'; 
+    
+    // Llamar a la función login del controlador
+    require_once('../controlador/controlador.php');
+    $controlador = new ControladorSolicitud();
+    $controlador->manejarSolicitud();
+    if (isset($_SESSION['rol']) && $_SESSION['rol'] == 'cliente') {
+        header("Location: ../index.php");
+    }
+    ?>
 </body>
 </html>

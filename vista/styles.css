@@ -122,3 +122,12 @@ footer {
 .info-hotel {
     margin-top: 20px;
 }
+
+.info-usuario {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 200px;
+    padding: 20px;
+    border-left: 1px solid #000;
+}
