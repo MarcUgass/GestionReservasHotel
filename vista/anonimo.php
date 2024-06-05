@@ -33,20 +33,6 @@ function paginaAnonimo() {
             </div>
         </div>
         <?php include \'footer.php\'; ?>
-        <script>
-            function cargarInformacionHotel() {
-                fetch(\'obtener_informacion_hotel.php\')
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById(\'total_habitaciones\').innerText = data.total_habitaciones;
-                        document.getElementById(\'habitaciones_libres\').innerText = data.habitaciones_libres;
-                        document.getElementById(\'capacidad_total\').innerText = data.capacidad_total;
-                        document.getElementById(\'huespedes_alojados\').innerText = data.huespedes_alojados;
-                    });
-            }
-
-            document.addEventListener(\'DOMContentLoaded\', cargarInformacionHotel);
-        </script>
     </body>
     </html>';
 }

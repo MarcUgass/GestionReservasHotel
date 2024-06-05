@@ -7,11 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'header.php'; ?>
+    <?php 
+    session_start();
+    // Si el usuario está logueado como cliente, redirigir a la página principal
+    if (isset($_SESSION['rol']) && $_SESSION['rol'] == 'cliente') {
+        header("Location: ../index.php");
+        exit();
+    } else {
+        include 'header.php'; 
+    ?>
     <div class="container">
-        <h1>Registro de Usuarios</h1>
-        <form action="../controlador/controlador.php" method="post">
-        <input type="hidden" name="accion" value="registro">
+        <h1>Registro</h1>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <input type="hidden" name="accion" value="registro">
+            
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" required>
             
@@ -33,20 +42,14 @@
             <button type="submit">Registrarse</button>
         </form>
     </div>
-    <?php include 'footer.php'; ?>
-    <script>
-        function cargarInformacionHotel() {
-            fetch('obtener_informacion_hotel.php')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('total_habitaciones').innerText = data.total_habitaciones;
-                    document.getElementById('habitaciones_libres').innerText = data.habitaciones_libres;
-                    document.getElementById('capacidad_total').innerText = data.capacidad_total;
-                    document.getElementById('huespedes_alojados').innerText = data.huespedes_alojados;
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', cargarInformacionHotel);
-    </script>
+    <?php 
+        include 'footer.php'; 
+        
+        // Llamar a la función registro del controlador
+        require_once('../controlador/controlador.php');
+        $controlador = new ControladorSolicitud();
+        $controlador->manejarSolicitud();
+    }
+    ?>
 </body>
 </html>

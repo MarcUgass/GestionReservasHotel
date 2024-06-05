@@ -25,6 +25,7 @@ class ControladorSolicitud {
         }
     }
 
+
     private function manejarRegistro() {
         // Datos para el registro
         $nombre = $_POST['nombre'];
@@ -59,35 +60,24 @@ class ControladorSolicitud {
         #return $rol;
     }
 
-/*    private function login($email, $clave) {
-        $sql = "SELECT rol, clave FROM usuario WHERE email = ?";
-        $stmt = $this->conexion->prepare($sql);
-        if (!$stmt) {
-            echo "Error preparando la declaración: " . $this->conexion->error;
-            return null;
-        }
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    public function obtenerDatosHabitaciones() {
+        // Lógica para obtener los datos
+        require_once 'modelo.php';
+    
+        $total_habitaciones = obtenerTotalHabitaciones();
+        $habitaciones_libres = obtenerHabitacionesLibres();
+        $capacidad_total = obtenerCapacidadTotal();
+        $huespedes_alojados = obtenerHuespedesAlojados();
+    
+        // Retornar los datos como un array asociativo
+        return [
+            'total_habitaciones' => $total_habitaciones,
+            'habitaciones_libres' => $habitaciones_libres,
+            'capacidad_total' => $capacidad_total,
+            'huespedes_alojados' => $huespedes_alojados
+        ];
+    }
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $hashed_clave = $row['clave'];
-            $rol = $row['rol'];
-
-            if (password_verify($clave, $hashed_clave)) {
-                // Si la clave es correcta, devolvemos el rol
-                return $rol;
-            } else {
-                echo "Error: Clave incorrecta.";
-                return null;
-            }
-        } else {
-            echo "Error: No se encontró el usuario con ese correo electrónico.";
-            return null;
-        }
-        $stmt->close();
-    }*/
 }
 
 

@@ -97,6 +97,52 @@ function obtenerRolUsuario($email) {
         return NULL;
     }
 }
+function obtenerInformacionHotel($conexion) {
+    $sql = "SELECT 
+                (SELECT COUNT(*) FROM habitacion) AS total_habitaciones,
+                (SELECT COUNT(*) FROM habitacion h WHERE NOT EXISTS (SELECT 1 FROM reserva r WHERE r.num_hab = h.numero AND r.Estado IN ('Operativa'))) AS habitaciones_libres,
+                (SELECT SUM(capacidad) FROM habitacion) AS capacidad_total,
+                (SELECT COUNT(*) FROM reserva WHERE Estado IN ('Operativa', 'Confirmada')) AS huespedes_alojados";
+    $stmt = $conexion->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
+}
 
-// Ejemplo de uso:
+
+function obtenerTotalHabitaciones() {
+    global $conexion;
+    $query = "SELECT COUNT(*) AS total_habitaciones FROM habitacion";
+    $resultado = $conexion->query($query);
+    return $resultado;#->fetch(PDO::FETCH_ASSOC)['total_habitaciones'];
+}
+
+function obtenerHabitacionesLibres() {
+    global $conexion;
+    $query = "SELECT COUNT(*) AS habitaciones_libres 
+              FROM habitacion h 
+              WHERE NOT EXISTS (
+                  SELECT 1 
+                  FROM reserva r 
+                  WHERE r.num_hab = h.numero 
+                  AND r.Estado IN ('Operativa')
+              )";
+    $resultado = $conexion->query($query);
+    return $resultado;  #->fetch(PDO::FETCH_ASSOC)['habitaciones_libres'];
+}
+
+function obtenerCapacidadTotal() {
+    global $conexion;
+    $query = "SELECT SUM(capacidad) AS capacidad_total FROM habitacion";
+    $resultado = $conexion->query($query);
+    return $resultado; #->fetch(PDO::FETCH_ASSOC)['capacidad_total'];
+}
+
+function obtenerHuespedesAlojados() {
+    global $conexion;
+    $query = "SELECT COUNT(*) AS huespedes_alojados 
+              FROM reserva 
+              WHERE Estado IN ('Operativa', 'Confirmada')";
+    $resultado = $conexion->query($query);
+    return $resultado;#->fetch(PDO::FETCH_ASSOC)['huespedes_alojados'];
 ?>
