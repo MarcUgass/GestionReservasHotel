@@ -1,22 +1,22 @@
 <?php
-require 'vista/anonimo.php';
-require 'vista/cliente.php';
+require 'vista/interfazUsuario.php';
 
 session_start();
 // Verificamos si $_SESSION['rol'] está definido
 if (isset($_SESSION['rol'])) {
     $rol = $_SESSION['rol'];
-
+    
     // Redirigimos según el rol usando switch
     switch ($rol) {
-        case 'administrador':
-            paginaAdmin();
+        case 'admin':
+            paginaAdmin($_SESSION['email']);
             break;
         case 'recepcionista':
-            paginaUsuario();
+            paginaRecepcionista($_SESSION['email']);
             break;
         case 'cliente':
-            paginaCliente();
+            paginaCliente($_SESSION['email']);
+            #$usuario = new usuario($_SESSION['email'], $_SESSION['clave'], $_SESSION['rol']);
             break;
         default:
             paginaAnonimo();
@@ -27,3 +27,4 @@ if (isset($_SESSION['rol'])) {
     paginaAnonimo();
 }
 ?>
+<?php include 'vista/footer.php'; ?>
