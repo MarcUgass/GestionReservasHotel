@@ -365,4 +365,181 @@ function DB_delete($db)
     mysqli_commit($db);
 }
 
+function conectar(){
+    $conexion = new mysqli("localhost", "root", "", "proyectotw");
+    if($conexion->connect_error){
+        die("Conexión fallida: " . $conexion->connect_error);
+    }
+    return $conexion;
+}
+
+function verificar_usuario($email, $clave){
+    $conexion = conectar();
+    $sql = "SELECT * FROM usuario WHERE email = ? AND clave = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("ss", $email, $clave);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $usuario = $resultado->fetch_assoc();
+    $stmt->close();
+    $conexion->close();
+    return $usuario;
+}
+
+//RESERVAS
+
+function obtener_reservas(){
+    $conexion = conectar();
+    $sql = "SELECT * FROM reserva";
+    $resultado = $conexion->query($sql);
+    $reservas = array();
+    while($fila = $resultado->fetch_assoc()){
+        $reservas[] = $fila;
+    }
+    $conexion->close();
+    return $reservas;
+}
+
+function obtener_habitaciones(){
+    $conexion = conectar();
+    $sql = "SELECT numero FROM habitacion";
+    $resultado = $conexion->query($sql);
+    $habitaciones = array();
+    while($fila = $resultado->fetch_assoc()){
+        $habitaciones[] = $fila['numero'];
+    }
+    $conexion->close();
+    return $habitaciones;
+}
+
+function obtener_fechas_reservadas($num_hab) {
+    $conexion = conectar();
+    $sql = "SELECT entrada, salida FROM reserva WHERE num_hab = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("i", $num_hab);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $fechas = array();
+    while($fila = $resultado->fetch_assoc()){
+        $fechas[] = array("entrada" => $fila["entrada"], "salida" => $fila["salida"]);
+    }
+    $stmt->close();
+    $conexion->close();
+    return $fechas;
+}
+
+function eliminar_reserva($email, $num_hab) {
+    $conexion = conectar();
+    $sql = "DELETE FROM reserva WHERE email = ? AND num_hab = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("si", $email, $num_hab);
+
+    $resultado = $stmt->execute();
+    $stmt->close();
+    $conexion->close();
+
+    return $resultado;
+}
+
+function editar_reserva($email, $num_hab, $entrada, $salida) {
+    $conexion = conectar();
+    $sql = "UPDATE reserva SET entrada = ?, salida = ? WHERE email = ? AND num_hab = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("sssi", $entrada, $salida, $email, $num_hab);
+
+    $resultado = $stmt->execute();
+    $stmt->close();
+    $conexion->close();
+
+    return $resultado;
+}
+
+function crear_reserva($email, $num_hab, $entrada, $salida) {
+    $conexion = conectar();
+
+    // Verificar disponibilidad de la habitación
+    $sql_verificar = "SELECT * FROM reserva WHERE num_hab = ? AND (entrada <= ? AND salida >= ?)";
+    $stmt_verificar = $conexion->prepare($sql_verificar);
+    $stmt_verificar->bind_param("iss", $num_hab, $salida, $entrada);
+    $stmt_verificar->execute();
+    $resultado_verificar = $stmt_verificar->get_result();
+
+    if ($resultado_verificar->num_rows > 0) {
+        $stmt_verificar->close();
+        $conexion->close();
+        return false; // La habitación no está disponible
+    }
+
+    $stmt_verificar->close();
+
+    // Crear la reserva
+    $sql = "INSERT INTO reserva (email, num_hab, entrada, salida) VALUES (?, ?, ?, ?)";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("siss", $email, $num_hab, $entrada, $salida);
+
+    $resultado = $stmt->execute();
+    $stmt->close();
+    $conexion->close();
+
+    return $resultado;
+}
+
+//USUARIOS
+
+function otbenerTodosUsuarios($conexion) {
+    $sql = "SELECT * FROM usuario";
+    $result = $conexion->query($sql);
+    return $result;
+}
+
+function crearusuario($conn, $nombre, $apellidos, $dni, $email, $clave, $tarjeta, $rol) {
+    $sql = "INSERT INTO usuario (email, clave, nombre, apellido, dni, tarjeta, rol) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssiss", $email, $clave, $nombre, $apellidos, $dni, $tarjeta, $rol);
+
+    if (!$stmt->execute()) {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+
+    }
+
+    //logEvento($conn, $email, 'registro');
+    $stmt->close();
+    $conn->close();
+}
+
+function eliminar_usuario($conexion, $email) {
+    $sql = "DELETE FROM usuario WHERE email = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("s", $email);
+
+    $resultado = $stmt->execute();
+    $stmt->close();
+    $conexion->close();
+
+    return $resultado;
+}
+
+function modificarUsuario($conexion, $email_original, $email, $nombre, $apellidos, $dni, $tarjeta, $rol) {
+    $sql = "UPDATE usuario SET email = ?, nombre = ?, apellido = ?, dni = ?, tarjeta = ?, rol = ? WHERE email = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("ssssiss", $email, $nombre, $apellidos, $dni, $tarjeta, $rol, $email_original);
+
+    if (!$stmt->execute()) {
+        echo "Error: " . $sql . "<br>" . $conexion->error;
+    }
+
+    $stmt->close();
+}
+
+function obtenerUsuarioPorEmail($conexion, $email) {
+    $sql = "SELECT * FROM usuario WHERE email = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $usuario = $result->fetch_assoc();
+
+    $stmt->close();
+    return $usuario;
+}
 ?>

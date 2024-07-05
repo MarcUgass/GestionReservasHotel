@@ -2,29 +2,27 @@
 require 'vista/interfazUsuario.php';
 
 session_start();
-// Verificamos si $_SESSION['rol'] está definido
-if (isset($_SESSION['rol'])) {
-    $rol = $_SESSION['rol'];
-    
-    // Redirigimos según el rol usando switch
-    switch ($rol) {
-        case 'admin':
-            paginaAdmin($_SESSION['email']);
-            break;
-        case 'recepcionista':
-            paginaRecepcionista($_SESSION['email']);
-            break;
-        case 'cliente':
-            paginaCliente($_SESSION['email']);
-            #$usuario = new usuario($_SESSION['email'], $_SESSION['clave'], $_SESSION['rol']);
-            break;
-        default:
+
+if (!isset($_COOKIE['usuario']) && !isset($_COOKIE['rol'])) {
+    setcookie('usuario', 'anonimo', time() + 3600, '/');
+    setcookie('rol', 'anonimo', time() + 3600, '/');
+    paginaAnonimo();
+}
+if (isset($_COOKIE['rol']) && isset($_COOKIE['usuario'])) {
+    switch ($_COOKIE['rol']) {
+        case 'anonimo':
             paginaAnonimo();
             break;
+        case 'admin':
+            paginaAdmin();
+            break;
+        case 'recepcionista':
+            paginaRecepcionista();
+            break;
+        case 'cliente':
+            paginaCliente();
+            break;
     }
-} else {
-    // Si $_SESSION['rol'] no está definido, mostramos un error o redirigimos a una página predeterminada
-    paginaAnonimo();
 }
 ?>
 <?php include 'vista/footer.php'; ?>

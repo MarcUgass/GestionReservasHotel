@@ -29,6 +29,8 @@
         $controlador = new ControladorSolicitud();
         logEvento($controlador->getBD(), $_SESSION['email'] , 'logout');
         session_destroy();
+        setcookie('usuario', 'otro', time() - 3600, '/');
+        setcookie('rol', 'otro', time() - 3600, '/');
         
         // Redirigir a la página de inicio
         header("Location: ../index.php");
@@ -39,7 +41,7 @@
     <p>¿Estás seguro de que quieres cerrar sesión?</p>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <input type="submit" name="logout" value="Sí">
-        <a href="../index.php">No</a>
+        <button type="button" onclick="location.href='../index.php';" class="btn">No</button>
     </form>
     <?php include 'footer.php'; ?>
 </body>

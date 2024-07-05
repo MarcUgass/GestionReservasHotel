@@ -24,7 +24,55 @@ class ControladorSolicitud {
             exit();
         }
     }
+    public function manejarUsuario() {
+                // Manejar las acciones de los formularios
+                if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                    if (isset($_POST['modificar'])) {
+                        $email = $_POST['email'];
+                        ob_start();
+                        modificarUsuariopagina($email);
+                        ob_end_flush();
+                        exit();
+                    }
+                    if (isset($_POST['borrar'])) {
+                        $email = $_POST['email'];
+                        if (eliminar_usuario($this->conexion, $email)){
+                            echo "<p>Usuario con email: $email eliminado exitosamente</p>";
+                            }
+                            else {
+                                echo "<p>No se pudo borrar el usuario con email: $email</p>";
+                            }
+                    }
+                    if (isset($_POST['crear'])) {
+                        $nombre = $_POST['nombre'];
+                        $apellidos = $_POST['apellidos'];
+                        $dni = $_POST['dni'];
+                        $email = $_POST['email'];
+                        $clave = password_hash($_POST['clave'], PASSWORD_DEFAULT); // Asegurarse de hash la clave antes de almacenarla
+                        $tarjeta = $_POST['tarjeta'];
+                        $rol = $_POST['rol'];
 
+                        if (!$nombre || !$apellidos || !$dni || !$email || !$clave || !$tarjeta) {
+                            echo "Error: Uno o más campos están vacíos.";
+                            exit();
+                        }
+
+                        // Llamar a la función registrar
+                        crearUsuario($this->conexion, $nombre, $apellidos, $dni, $email, $clave, $tarjeta, $rol);
+                    }
+                    if (isset($_POST['guardar'])) {
+                        $email_original = $_POST['email_original'];
+                        $email = $_POST['email'];
+                        $nombre = $_POST['nombre'];
+                        $apellidos = $_POST['apellidos'];
+                        $dni = $_POST['dni'];
+                        $tarjeta = $_POST['tarjeta'];
+                        $rol = $_POST['rol'];
+        
+                        modificarUsuario($this->conexion, $email_original, $email, $nombre, $apellidos, $dni, $tarjeta, $rol);
+                    }
+                }
+    }
 
     private function manejarRegistro() {
         // Datos para el registro
@@ -106,5 +154,15 @@ class ControladorSolicitud {
     function getBD(){
         return $this->conexion;
     }
+
+    function obtenerlistaUsuarios(){
+        $result = otbenerTodosUsuarios($this->conexion);
+        return $result;
+    }
+
+    public function obtenerUsuarioPorEmail($email) {
+        return obtenerUsuarioPorEmail($this->conexion, $email);
+    }
+
 }
 ?>

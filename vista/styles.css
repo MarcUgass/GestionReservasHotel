@@ -113,7 +113,7 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: absolute;
+    height: 20%;
     bottom: 0;
     width: 100%;
 }
@@ -122,16 +122,20 @@ footer {
 .info-hotel {
     margin-top: 20px;
 }
-/*
-.info-usuario {
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: 200px;
-    padding: 20px;
-    border-left: 1px solid #000;
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 15px;
+    color: white;
+    background-color: #333;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
 }
-*/
+
 .info-usuario {
     position: absolute;
     right: 10px; /* Ajusta la distancia desde el borde derecho */

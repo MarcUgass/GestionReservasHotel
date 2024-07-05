@@ -37,6 +37,8 @@
     $controlador = new ControladorSolicitud();
     $controlador->manejarSolicitud();
     if (isset($_SESSION['rol'])) {
+        setcookie('usuario', $_SESSION['email'], time() + 3600, '/');
+        setcookie('rol', $_SESSION['rol'], time() + 3600, '/');
         header("Location: ../index.php");
     }
 

@@ -8,19 +8,17 @@ CREATE TABLE `habitacion` (
   PRIMARY KEY (`numero`),
   KEY `numero` (`numero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO habitacion VALUES ('0', '4', '0', '', '0');
-INSERT INTO habitacion VALUES ('1', '2', '10', 'Habitacion de dos personas', '0');
-INSERT INTO habitacion VALUES ('101', '2', '0', '', '0');
-INSERT INTO habitacion VALUES ('102', '2', '0', '', '0');
-INSERT INTO habitacion VALUES ('103', '2', '0', '', '0');
-INSERT INTO habitacion VALUES ('104', '2', '0', '', '0');
-INSERT INTO habitacion VALUES ('105', '2', '0', '', '0');
-INSERT INTO habitacion VALUES ('201', '3', '0', '', '0');
-INSERT INTO habitacion VALUES ('202', '3', '0', '', '0');
-INSERT INTO habitacion VALUES ('203', '3', '0', '', '0');
-INSERT INTO habitacion VALUES ('204', '3', '0', '', '0');
-INSERT INTO habitacion VALUES ('301', '4', '0', '', '0');
-INSERT INTO habitacion VALUES ('302', '4', '0', '', '0');
+INSERT INTO habitacion VALUES ('101', '2', '100', 'Descripcion de habitacion 101', '0');
+INSERT INTO habitacion VALUES ('102', '2', '100', 'Descripcion de habitacion 102', '0');
+INSERT INTO habitacion VALUES ('103', '2', '100', 'Descripcion de habitacion 103', '1');
+INSERT INTO habitacion VALUES ('104', '2', '100', 'Descripcion de habitacion 104', '1');
+INSERT INTO habitacion VALUES ('105', '2', '100', 'Descripcion de habitacion 105', '2');
+INSERT INTO habitacion VALUES ('201', '3', '150', 'Descripcion de habitacion 201', '2');
+INSERT INTO habitacion VALUES ('202', '3', '150', 'Descripcion de habitacion 202', '3');
+INSERT INTO habitacion VALUES ('203', '3', '150', 'Descripcion de habitacion 203', '3');
+INSERT INTO habitacion VALUES ('204', '3', '150', 'Descripcion de habitacion 204', '4');
+INSERT INTO habitacion VALUES ('301', '4', '200', 'Descripcion de habitacion 301', '4');
+INSERT INTO habitacion VALUES ('302', '4', '200', 'Descripcion de habitacion 302', '4');
 
 DROP TABLE IF EXISTS logs;
 CREATE TABLE `logs` (
@@ -29,12 +27,23 @@ CREATE TABLE `logs` (
   `descripcion` varchar(100) NOT NULL,
   `fecha` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO logs VALUES ('1', 'garridonaldaandres99@gmail.com', 'garridonaldaandres99@gmail.com ha iniciado sesión', '2024-06-07');
-INSERT INTO logs VALUES ('2', 'garridonaldaandres99@gmail.com', 'garridonaldaandres99@gmail.com ha cerrado sesión', '2024-06-07');
-INSERT INTO logs VALUES ('4', 'marcos@correo.com', 'marcos@correo.com ha iniciado sesión', '2024-06-07');
-INSERT INTO logs VALUES ('5', 'marcos@correo.com', 'marcos@correo.com ha cerrado sesión', '2024-06-07');
-INSERT INTO logs VALUES ('6', 'paco@correo.com', 'paco@correo.com ha iniciado sesión', '2024-06-07');
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO logs VALUES ('24', 'tia@void.ugr.es', 'tia@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('25', 'abuela@void.ugr.es', 'abuela@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('26', 'director@void.ugr.es', 'director@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('27', 'elsuper@void.ugr.es', 'elsuper@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('28', 'mortadelo@void.ugr.es', 'mortadelo@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('29', 'filemon@void.ugr.es', 'filemon@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('30', 'bacterio@void.ugr.es', 'bacterio@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('31', 'ofelia@void.ugr.es', 'ofelia@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('32', 'irma@void.ugr.es', 'irma@void.ugr.es se ha registrado', '2024-06-07');
+INSERT INTO logs VALUES ('33', 'tia@void.ugr.es', 'tia@void.ugr.es ha iniciado sesión', '2024-06-07');
+INSERT INTO logs VALUES ('34', 'tia@void.ugr.es', 'tia@void.ugr.es ha cerrado sesión', '2024-06-07');
+INSERT INTO logs VALUES ('35', 'director@void.ugr.es', 'director@void.ugr.es ha iniciado sesión', '2024-06-07');
+INSERT INTO logs VALUES ('36', 'director@void.ugr.es', 'director@void.ugr.es ha cerrado sesión', '2024-06-07');
+INSERT INTO logs VALUES ('37', 'filemon@void.ugr.es', 'filemon@void.ugr.es ha iniciado sesión', '2024-06-07');
+INSERT INTO logs VALUES ('38', 'filemon@void.ugr.es', 'filemon@void.ugr.es ha cerrado sesión', '2024-06-07');
+INSERT INTO logs VALUES ('39', 'tia@void.ugr.es', 'tia@void.ugr.es ha iniciado sesión', '2024-06-07');
 
 DROP TABLE IF EXISTS reserva;
 CREATE TABLE `reserva` (
@@ -51,9 +60,6 @@ CREATE TABLE `reserva` (
   CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`email`) REFERENCES `usuario` (`email`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `reserva_ibfk_2` FOREIGN KEY (`num_hab`) REFERENCES `habitacion` (`numero`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO reserva VALUES ('garridonaldaandres99@gmail.com', '101', '2', 'Ok', '2024-06-10', '2024-06-20', 'Confirmada', '2024-06-06');
-INSERT INTO reserva VALUES ('garridonaldaandres99@gmail.com', '102', '1', '', '2024-06-10', '2024-06-20', '', '2024-06-07');
-INSERT INTO reserva VALUES ('paco@correo.com', '101', '1', '', '2024-06-21', '2024-06-25', '', '2024-06-07');
 
 DROP TABLE IF EXISTS usuario;
 CREATE TABLE `usuario` (
@@ -67,10 +73,14 @@ CREATE TABLE `usuario` (
   `rol` enum('cliente','admin','recepcionista','anonimo') NOT NULL,
   PRIMARY KEY (`id`,`email`),
   KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO usuario VALUES ('4', 'marcugas@correo.ugr.es', '$2y$10$8sYfqd38uD46NEcbrVk/a./oLLbi.oUcTJ7K4rnL.sfzgnnWXKD7m', 'marc', 'ugas', '3235432', '324532', 'cliente');
-INSERT INTO usuario VALUES ('5', 'garridonaldaandres99@gmail.com', '$2y$10$W3/EU6xWorXNrJ8jP5xe.uNB..MddQvQ1E5fQo7zTPV9.myJWwYP2', 'Andres', 'Garrido', '77768401', '1111', 'cliente');
-INSERT INTO usuario VALUES ('6', 'valentinrapidin@correo.com', '$2y$10$IpSXKDEStKbrAuxP.nw3wOM.nOo07uhzWkLnGW.HIpauMtz8KEMl6', 'Valentin', 'Gonzalez ', '1234', '1111', 'cliente');
-INSERT INTO usuario VALUES ('7', 'paco@correo.com', '$2y$10$c.rY7hC/hqljO6rmSUMo/.wShXNygLdxWTsrjQUARiv9IUnATyUWS', 'Paco', 'Petines', '123', '1111', 'admin');
-INSERT INTO usuario VALUES ('8', 'marcos@correo.com', '$2y$10$weSrFSq2Wu/WkYAz/aKUbeZDYw5jbGytBpsrXYYHW0ZqrhgNG729e', 'Marcos', 'Largo', '1234', '1111', 'recepcionista');
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO usuario VALUES ('10', 'tia@void.ugr.es', '$2y$10$elU5gP/qSuYQEUgwcXHqEeptRc1XuxQt0GLJiIxhB51w/hqps3tAC', 'Tia', 'Gonzalez ', '1234', '1111', 'admin');
+INSERT INTO usuario VALUES ('11', 'abuela@void.ugr.es', '$2y$10$crH8TFbjfFOU0W8OBp6Bi.4NS9cDLvhEtd.rQjHFqTYYH1Q60AyhK', 'Abuela', 'Gonzalez ', '1234', '1111', 'admin');
+INSERT INTO usuario VALUES ('12', 'director@void.ugr.es', '$2y$10$DcTKRGvOfj6JgyhpfboiF.Qxnui26PExw6naGUPS9QRe/q61sQc16', 'Director', 'Gonzalez ', '1234', '1111', 'recepcionista');
+INSERT INTO usuario VALUES ('13', 'elsuper@void.ugr.es', '$2y$10$nFKycbOF9fvfXizjEnP3aOvCigQTtsn0jAsb85vCTC5nx1ONSPss6', 'ElSuper', 'Gonzalez ', '1234', '1111', 'recepcionista');
+INSERT INTO usuario VALUES ('14', 'mortadelo@void.ugr.es', '$2y$10$okcnBX3AGqrRXuiaCChvkOac7uW3gSN3qpmNsYzOleP199nYluBKa', 'Mortadelo', 'Gonzalez ', '1234', '1111', 'cliente');
+INSERT INTO usuario VALUES ('15', 'filemon@void.ugr.es', '$2y$10$hBcbOWhTfxE0nOGpZjNwcOm3Jc2xnkLhPiXnKDV046W73QHI3ll7i', 'Filemon', 'Gonzalez ', '1234', '1111', 'cliente');
+INSERT INTO usuario VALUES ('16', 'bacterio@void.ugr.es', '$2y$10$RzNYGXgXEbgInA1aEcF7QeTgHHyooB5IjS3i/SWSh9eeklCDB6KOi', 'Bacterio', 'Profesor', '1234', '1111', 'cliente');
+INSERT INTO usuario VALUES ('17', 'ofelia@void.ugr.es', '$2y$10$Bhpf3kdN7wQ9sBKsLELcA.6Ws0em1pRgRhlVAabo82tZUZjOooJYO', 'Ofelia', 'Gonzalez ', '1234', '1111', 'cliente');
+INSERT INTO usuario VALUES ('18', 'irma@void.ugr.es', '$2y$10$iKdErlyklV0G5RKgIJdYJOfvR2wLugfesSI5kmMfd5XTVb9NDHwL.', 'Irma', 'Gonzalez ', '1234', '1111', 'cliente');
 

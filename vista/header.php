@@ -20,6 +20,7 @@ session_start();
                     elseif ($_SESSION['rol'] == 'admin'){ 
                         echo '<li><a href="gestion_admin.php">Gestión de Base de Datos</a></li>';
                         echo '<li><a href="reserva_recepcionista.php">Gestión de Reservas</a></li>';
+                        echo '<li><a href="crudusuario.php">CRUD Usuarios</a></li>';
                         echo '<li><a href="logout.php">Cerrar Sesión</a></li>';
                     } 
                     elseif ($_SESSION['rol'] == 'recepcionista') {

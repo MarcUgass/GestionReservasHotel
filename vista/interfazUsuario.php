@@ -41,10 +41,10 @@ function paginaAnonimo() {
     </html>';
 }
 
-function paginaCliente($email) {
+function paginaCliente() {
     $controlador = new ControladorSolicitud();
     $totalHabitaciones = $controlador->obtenerDatosHabitaciones();
-    $infoususario = $controlador->obtenerDatosUsuario($email);
+    $infoususario = $controlador->obtenerDatosUsuario($_COOKIE['usuario']);
 
     echo '<!DOCTYPE html>
     <html lang="es">
@@ -90,10 +90,10 @@ function paginaCliente($email) {
     </html>';
 }
 
-function paginaAdmin($email) {
+function paginaAdmin() {
     $controlador = new ControladorSolicitud();
     $totalHabitaciones = $controlador->obtenerDatosHabitaciones();
-    $infoususario = $controlador->obtenerDatosUsuario($email);
+    $infoususario = $controlador->obtenerDatosUsuario($_COOKIE['usuario']);
 
     echo '<!DOCTYPE html>
     <html lang="es">
@@ -109,10 +109,11 @@ function paginaAdmin($email) {
             <nav>
                 <ul>
                     <li><a href="index.php">Inicio</a></li>
-                    <li><a href="vista/servicios.php.php">Servicios</a></li>
+                    <li><a href="vista/servicios.php">Servicios</a></li>
                     <li><a href="vista/habitaciones.php">Habitaciones</a></li>
                     <li><a href="vista/gestion_admin.php">Gestión de Base de Datos</a></li>
                     <li><a href="vista/reserva_recepcionista.php">Gestión de Reservas</a></li>
+                    <li><a href="vista/crudusuario.php">CRUD Usuarios</a></li>
                     <li><a href="vista/logout.php">Cerrar Sesión</a></li>
                 </ul>
             </nav>
@@ -140,10 +141,10 @@ function paginaAdmin($email) {
     </html>';
 }
 
-function paginaRecepcionista($email) {
+function paginaRecepcionista() {
     $controlador = new ControladorSolicitud();
     $totalHabitaciones = $controlador->obtenerDatosHabitaciones();
-    $infoususario = $controlador->obtenerDatosUsuario($email);
+    $infoususario = $controlador->obtenerDatosUsuario($_COOKIE['usuario']);
 
     echo '<!DOCTYPE html>
     <html lang="es">
