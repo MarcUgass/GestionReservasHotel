@@ -36,12 +36,7 @@ class ControladorSolicitud {
                     }
                     if (isset($_POST['borrar'])) {
                         $email = $_POST['email'];
-                        if (eliminar_usuario($this->conexion, $email)){
-                            echo "<p>Usuario con email: $email eliminado exitosamente</p>";
-                            }
-                            else {
-                                echo "<p>No se pudo borrar el usuario con email: $email</p>";
-                            }
+                        eliminar_usuario($this->conexion, $email);
                     }
                     if (isset($_POST['crear'])) {
                         $nombre = $_POST['nombre'];
@@ -109,6 +104,23 @@ class ControladorSolicitud {
         #return $rol;
     }
 
+    public function manejarReserva( ){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['accion'])) {
+            $email = $_SESSION['email'];
+            $num_hab = $_SESSION['num_hab'];
+            $entrada = $_POST['fecha_entrada'];
+            $salida = $_POST['fecha_salida'];
+
+            $v = ReservaUsuario($this->conexion, $email, $entrada, $num_hab, $salida);
+            $_SESSION['num_hab'] = NULL;
+            return $v;
+            }
+        
+        }
+
+    }
+
     public function obtenerDatosHabitaciones() {
         // Lógica para obtener los datos
     
@@ -164,5 +176,11 @@ class ControladorSolicitud {
         return obtenerUsuarioPorEmail($this->conexion, $email);
     }
 
+    public function obtenerReservasPorEmail($email) {
+        return obtenerReserva($this->conexion, $email);
+    }
+
 }
+
+#global $controlador = new ControladorSolicitud();
 ?>

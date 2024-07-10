@@ -38,7 +38,6 @@ function login($conn, $email, $clave) { //almacenar
             return $rol;
         } else {
             echo "Error: Clave incorrecta.";
-            echo "num_rows: " . $stmt->num_rows;
             return null;
         }
         echo "Error: No se encontró el usuario con ese correo electrónico.";
@@ -366,7 +365,7 @@ function DB_delete($db)
 }
 
 function conectar(){
-    $conexion = new mysqli("localhost", "root", "", "proyectotw");
+    $conexion = new mysqli("localhost", "andresgarrido2324", "raRlaKmWlaoI7LMK", "andresgarrido2324");
     if($conexion->connect_error){
         die("Conexión fallida: " . $conexion->connect_error);
     }
@@ -473,9 +472,10 @@ function crear_reserva($email, $num_hab, $entrada, $salida) {
     $stmt_verificar->close();
 
     // Crear la reserva
-    $sql = "INSERT INTO reserva (email, num_hab, entrada, salida) VALUES (?, ?, ?, ?)";
+    //$sql = "INSERT INTO reserva (email, num_hab, entrada, salida) VALUES (?, ?, ?, ?)";
+    $sql = "INSERT INTO reserva (comentarios, email, entrada, Estado, Marca, num_hab, personas, salida) VALUES ('', ?, ?, 'Confirmada', NOW(), ?, 1, ?)";
     $stmt = $conexion->prepare($sql);
-    $stmt->bind_param("siss", $email, $num_hab, $entrada, $salida);
+    $stmt->bind_param("ssis", $email, $entrada, $num_hab, $salida);
 
     $resultado = $stmt->execute();
     $stmt->close();
@@ -484,6 +484,59 @@ function crear_reserva($email, $num_hab, $entrada, $salida) {
     return $resultado;
 }
 
+function subir_imagen_habitacion($num_hab, $imagen) {
+    $conexion = conectar();
+    $sql = "UPDATE habitacion SET imagen = ? WHERE numero = ?";
+    $stmt = $conexion->prepare($sql);
+    if ($stmt === false) {
+        echo "Error al preparar la consulta: " . $conexion->error;
+        return false;
+    }
+    $stmt->bind_param("bi", $imagen, $num_hab);
+    $stmt->send_long_data(0, $imagen); // Enviar los datos de la imagen
+    $resultado = $stmt->execute();
+    if ($resultado === false) {
+        echo "Error al ejecutar la consulta: " . $stmt->error;
+    }
+    $stmt->close();
+    $conexion->close();
+
+    return $resultado;
+}
+
+function obtener_imagen_habitacion($num_hab) {
+    $conexion = conectar();
+    $sql = "SELECT imagen FROM habitacion WHERE numero = ?";
+    $stmt = $conexion->prepare($sql);
+    if ($stmt === false) {
+        echo "Error al preparar la consulta: " . $conexion->error;
+        return false;
+    }
+    $stmt->bind_param("i", $num_hab);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $fila = $resultado->fetch_assoc();
+
+    if (!$fila) {
+        echo "No se encontró la imagen para la habitación $num_hab.";
+        return false;
+    }
+
+    $stmt->close();
+    $conexion->close();
+
+    return $fila['imagen'];
+}
+
+function obtenerReserva($conexion, $email) {
+    $stmt = $conexion->prepare("SELECT * FROM reserva WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $stmt->close();
+    $conexion->close();
+    return $resultado;
+}
 //USUARIOS
 
 function otbenerTodosUsuarios($conexion) {
@@ -503,8 +556,7 @@ function crearusuario($conn, $nombre, $apellidos, $dni, $email, $clave, $tarjeta
     }
 
     //logEvento($conn, $email, 'registro');
-    $stmt->close();
-    $conn->close();
+
 }
 
 function eliminar_usuario($conexion, $email) {
@@ -541,5 +593,27 @@ function obtenerUsuarioPorEmail($conexion, $email) {
 
     $stmt->close();
     return $usuario;
+}
+
+function ReservaUsuario($conn, $email, $entrada, $num_hab, $salida) {
+    // Insertar la reserva en la base de datos
+    $sql_insert = "INSERT INTO reserva (comentarios, email, entrada, Estado, Marca, num_hab, personas, salida) VALUES ('', ?, ?, 'activa', NOW(), ?, 1, ?)";
+    $stmt_insert = $conn->prepare($sql_insert);
+
+    if ($stmt_insert) {
+        $stmt_insert->bind_param("ssis", $email, $entrada, $num_hab, $salida);
+        if ($stmt_insert->execute()) {
+            $conn->close();
+            return true;
+        } else {
+            $conn->close();
+            return false;
+        }
+        $stmt_insert->close();
+    } else {
+        $conn->close();
+        return false;
+    }
+    
 }
 ?>
