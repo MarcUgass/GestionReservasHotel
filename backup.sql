@@ -5,20 +5,23 @@ CREATE TABLE `habitacion` (
   `precio` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `num_fotos` int(11) DEFAULT 0,
+  `imagen` longblob,
   PRIMARY KEY (`numero`),
   KEY `numero` (`numero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO habitacion VALUES ('101', '2', '100', 'Descripcion de habitacion 101', '0');
-INSERT INTO habitacion VALUES ('102', '2', '100', 'Descripcion de habitacion 102', '0');
-INSERT INTO habitacion VALUES ('103', '2', '100', 'Descripcion de habitacion 103', '1');
-INSERT INTO habitacion VALUES ('104', '2', '100', 'Descripcion de habitacion 104', '1');
-INSERT INTO habitacion VALUES ('105', '2', '100', 'Descripcion de habitacion 105', '2');
-INSERT INTO habitacion VALUES ('201', '3', '150', 'Descripcion de habitacion 201', '2');
-INSERT INTO habitacion VALUES ('202', '3', '150', 'Descripcion de habitacion 202', '3');
-INSERT INTO habitacion VALUES ('203', '3', '150', 'Descripcion de habitacion 203', '3');
-INSERT INTO habitacion VALUES ('204', '3', '150', 'Descripcion de habitacion 204', '4');
-INSERT INTO habitacion VALUES ('301', '4', '200', 'Descripcion de habitacion 301', '4');
-INSERT INTO habitacion VALUES ('302', '4', '200', 'Descripcion de habitacion 302', '4');
+
+-- Insert statements with LOAD_FILE function
+INSERT INTO habitacion VALUES (101, 2, 100, 'Descripcion de habitacion 101', 0, LOAD_FILE('habitacionTipo1.jpg'));
+INSERT INTO habitacion VALUES (102, 2, 100, 'Descripcion de habitacion 102', 0, LOAD_FILE('habitacionTipo2.jpg'));
+INSERT INTO habitacion VALUES (103, 2, 100, 'Descripcion de habitacion 103', 1, LOAD_FILE('habitacionTipo1.jpg'));
+INSERT INTO habitacion VALUES (104, 2, 100, 'Descripcion de habitacion 104', 1, LOAD_FILE('habitacionTipo2.jpg'));
+INSERT INTO habitacion VALUES (105, 2, 100, 'Descripcion de habitacion 105', 2, LOAD_FILE('habitacionTipo1.jpg'));
+INSERT INTO habitacion VALUES (201, 3, 150, 'Descripcion de habitacion 201', 2, LOAD_FILE('habitacionTipo2.jpg'));
+INSERT INTO habitacion VALUES (202, 3, 150, 'Descripcion de habitacion 202', 3, LOAD_FILE('habitacionTipo1.jpg'));
+INSERT INTO habitacion VALUES (203, 3, 150, 'Descripcion de habitacion 203', 3, LOAD_FILE('habitacionTipo2.jpg'));
+INSERT INTO habitacion VALUES (204, 3, 150, 'Descripcion de habitacion 204', 4, LOAD_FILE('habitacionTipo1.jpg'));
+INSERT INTO habitacion VALUES (301, 4, 200, 'Descripcion de habitacion 301', 4, LOAD_FILE('habitacionTipo2.jpg'));
+INSERT INTO habitacion VALUES (302, 4, 200, 'Descripcion de habitacion 302', 4, LOAD_FILE('habitacionTipo1.jpg'));
 
 DROP TABLE IF EXISTS logs;
 CREATE TABLE `logs` (
@@ -60,6 +63,11 @@ CREATE TABLE `reserva` (
   CONSTRAINT `reserva_ibfk_1` FOREIGN KEY (`email`) REFERENCES `usuario` (`email`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `reserva_ibfk_2` FOREIGN KEY (`num_hab`) REFERENCES `habitacion` (`numero`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+INSERT INTO reserva VALUES ('bacterio@void.ugr.es', '103', '1', '', '2024-07-15', '2024-07-20', 'Confirmada', '2024-07-08');
+INSERT INTO reserva VALUES ('filemon@void.ugr.es', '102', '1', '', '2024-07-08', '2024-07-12', 'Confirmada', '2024-07-08');
+INSERT INTO reserva VALUES ('irma@void.ugr.es', '202', '1', '', '2024-07-19', '2024-07-23', 'Confirmada', '2024-07-08');
+INSERT INTO reserva VALUES ('mortadelo@void.ugr.es', '101', '1', '', '2024-07-12', '2024-07-18', 'Confirmada', '2024-07-08');
+INSERT INTO reserva VALUES ('ofelia@void.ugr.es', '103', '1', '', '2024-07-18', '2024-07-23', 'Confirmada', '2024-07-08');
 
 DROP TABLE IF EXISTS usuario;
 CREATE TABLE `usuario` (
